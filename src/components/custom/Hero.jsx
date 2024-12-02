@@ -3,8 +3,8 @@ import { Button } from "../ui/button";
 
 const Hero = () => {
     return (
-        <div className="flex flex-col items-center mx-56 gap-9">
-            <h1 className="font-extrabold text-[60px] text-center mt-16">
+        <div className="flex flex-col items-center w-full px-4 sm:px-8 md:px-56 gap-9">
+            <h1 className="font-extrabold text-[32px] sm:text-[40px] md:text-[60px] text-center mt-16">
                 <span className="text-[#fb8500]">
                     Discover Your Next Adventure with AI:
                 </span>{" "}
