@@ -1,5 +1,6 @@
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { useState } from "react";
+import { Input } from "@/components/ui/input";
 const CreateTrip = () => {
     const [place, setPlace] = useState();
     return (
@@ -12,9 +13,9 @@ const CreateTrip = () => {
                 Just provide some basic information, and our trip planner will
                 generate a customized itinerary based on your preferences.
             </p>
-            <div className="mt-20">
+            <div className="mt-20 flex flex-col gap-10">
                 <div>
-                    <h2 className="text-xl my-3 font-medium">
+                    <h2 className="text-xl my-3 font-normal">
                         What is your destination of choice?
                     </h2>
                     <GooglePlacesAutocomplete
@@ -27,6 +28,12 @@ const CreateTrip = () => {
                             },
                         }}
                     />
+                </div>
+                <div>
+                    <h2 className="text-xl my-3 font-normal">
+                        How many days are you planning your trip?
+                    </h2>
+                    <Input placeholder={"Example: 2"} type="number" />
                 </div>
             </div>
         </div>
