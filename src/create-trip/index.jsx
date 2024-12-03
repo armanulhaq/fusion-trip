@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { SelectBudgetOptions, SelectTravelList } from "@/constants/options";
 import { Button } from "@/components/ui/button";
+
 const CreateTrip = () => {
     const [place, setPlace] = useState();
     return (
@@ -21,7 +22,13 @@ const CreateTrip = () => {
                         What is your destination of choice?
                     </h2>
                     <GooglePlacesAutocomplete
-                        apiKey={import.meta.env.VITE_GOOGLE_PLACES_API}
+                        apiKey="AIzaSyCJTgyCmWak8D_UUHh7NwjeD_y-ARiNaIQ"
+                        onLoadFailed={(error) => {
+                            console.error(
+                                "Could not inject Google script",
+                                error
+                            );
+                        }}
                         selectProps={{
                             place,
                             onChange: (value) => {
