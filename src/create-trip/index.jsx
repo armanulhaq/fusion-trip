@@ -56,32 +56,6 @@ const CreateTrip = () => {
         console.log(result?.response?.text);
     };
 
-    const onGenerateTrip = async () => {
-        if (
-            formData?.noOfDays > 5 ||
-            !formData?.location ||
-            !formData.budget ||
-            !formData.traveller
-        ) {
-            toast.error("Please fill all required fields correctly");
-            return;
-        }
-
-        try {
-            const travelPlan = await generateTravelPlan(
-                formData.location.label,
-                formData.noOfDays,
-                formData.traveller,
-                formData.budget
-            );
-
-            // Handle the JSON response here
-            console.log(travelPlan);
-        } catch (error) {
-            toast.error("Failed to generate travel plan");
-            console.error(error);
-        }
-    };
     return (
         // default padding-5 and margin-top-10
         <div className="sm:px-10 md:px-32 lg:px-56 xl:px-10 px-5 mt-10">
