@@ -47,13 +47,13 @@ const CreateTrip = () => {
             </div>
             <div>
                 <h2 className="text-xl my-3 font-bold">What is your Budget?</h2>
-                <div className="grid grid-cols-3 gap-5 mt-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
                     {SelectBudgetOptions.map((item, index) => (
                         <div
                             key={index}
                             className="p-4 border cursor-pointer rounded-lg hover:shadow"
                         >
-                            <h2 className="4xl ">{item.icon}</h2>
+                            <h2 className="4xl">{item.icon}</h2>
                             <h2 className="font-bold text-lg">{item.title}</h2>
                             <h2 className="text-sm text-gray-500">
                                 {item.desc}
@@ -62,17 +62,18 @@ const CreateTrip = () => {
                     ))}
                 </div>
             </div>
+
             <div>
                 <h2 className="text-xl my-3 font-bold">
-                    Who do you plan on traveling with on your next adventure?{" "}
+                    Who do you plan on traveling with on your next adventure?
                 </h2>
-                <div className="grid grid-cols-3 gap-5 mt-5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-5">
                     {SelectTravelList.map((item, index) => (
                         <div
                             key={index}
                             className="p-4 border cursor-pointer rounded-lg hover:shadow"
                         >
-                            <h2 className="4xl ">{item.icon}</h2>
+                            <h2 className="4xl">{item.icon}</h2>
                             <h2 className="font-bold text-lg">{item.title}</h2>
                             <h2 className="text-sm text-gray-500">
                                 {item.desc}
@@ -81,6 +82,7 @@ const CreateTrip = () => {
                     ))}
                 </div>
             </div>
+
             <div className="my-10 justify-end flex">
                 <Button>Generate Trip</Button>
             </div>
