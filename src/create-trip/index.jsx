@@ -8,11 +8,22 @@ const CreateTrip = () => {
     const [place, setPlace] = useState();
     const [formData, setFormData] = useState([]);
     const handleInput = (name, value) => {
+        if (name === "noOfDays" && value > 5) {
+            console.log("Please enter trip days less than 5");
+            return;
+        }
         setFormData({ ...formData, [name]: value });
     };
     useEffect(() => {
         console.log(formData);
     }, [formData]);
+
+    const onGenerateTrip = () => {
+        if (formData?.noOfDays > 5) {
+            console.log("Please enter trip days less than 5");
+            return;
+        }
+    };
     return (
         // default padding-5 and margin-top-10
         <div className="sm:px-10 md:px-32 lg:px-56 xl:px-10 px-5 mt-10">
@@ -30,12 +41,6 @@ const CreateTrip = () => {
                     </h2>
                     <GooglePlacesAutocomplete
                         apiKey="AIzaSyCJTgyCmWak8D_UUHh7NwjeD_y-ARiNaIQ"
-                        onLoadFailed={(error) => {
-                            console.error(
-                                "Could not inject Google script",
-                                error
-                            );
-                        }}
                         selectProps={{
                             place,
                             onChange: (value) => {
@@ -64,8 +69,12 @@ const CreateTrip = () => {
                     {SelectBudgetOptions.map((item, index) => (
                         <div
                             key={index}
-                            className="p-4 border cursor-pointer rounded-lg hover:shadow"
                             onClick={() => handleInput("budget", item.title)}
+                            className={`p-4 border cursor-pointer rounded-lg hover:shadow-lg ${
+                                formData?.budget == item.title &&
+                                "shadow-lg border-black"
+                            }`}
+                            // The ?. (optional chaining) ensures no error occurs if formData is undefined.
                         >
                             <h2 className="4xl">{item.icon}</h2>
                             <h2 className="font-bold text-lg">{item.title}</h2>
@@ -86,9 +95,12 @@ const CreateTrip = () => {
                         <div
                             key={index}
                             onClick={() =>
-                                handleInput("travellers", item.people)
+                                handleInput("traveller", item.people)
                             }
-                            className="p-4 border cursor-pointer rounded-lg hover:shadow"
+                            className={`p-4 border cursor-pointer rounded-lg hover:shadow-lg ${
+                                formData?.traveller == item.people &&
+                                "shadow-lg border-black"
+                            }`}
                         >
                             <h2 className="4xl">{item.icon}</h2>
                             <h2 className="font-bold text-lg">{item.title}</h2>
@@ -101,7 +113,7 @@ const CreateTrip = () => {
             </div>
 
             <div className="my-10 justify-end flex">
-                <Button>Generate Trip</Button>
+                <Button onClick={onGenerateTrip}>Generate Trip</Button>
             </div>
         </div>
     );
