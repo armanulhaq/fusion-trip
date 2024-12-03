@@ -1,11 +1,18 @@
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { SelectBudgetOptions, SelectTravelList } from "@/constants/options";
 import { Button } from "@/components/ui/button";
 
 const CreateTrip = () => {
     const [place, setPlace] = useState();
+    const [formData, setFormData] = useState([]);
+    const handleInput = (name, value) => {
+        setFormData({ ...formData, [name]: value });
+    };
+    useEffect(() => {
+        console.log(formData);
+    }, [formData]);
     return (
         // default padding-5 and margin-top-10
         <div className="sm:px-10 md:px-32 lg:px-56 xl:px-10 px-5 mt-10">
@@ -33,7 +40,7 @@ const CreateTrip = () => {
                             place,
                             onChange: (value) => {
                                 setPlace(value);
-                                console.log(value);
+                                handleInput("location", value);
                             },
                         }}
                     />
@@ -42,7 +49,13 @@ const CreateTrip = () => {
                     <h2 className="text-xl my-3 font-bold">
                         How many days are you planning your trip?
                     </h2>
-                    <Input placeholder={"Example: 2"} type="number" />
+                    <Input
+                        placeholder={"Example: 2"}
+                        type="number"
+                        onChange={(e) =>
+                            handleInput("noOfDays", e.target.value)
+                        }
+                    />
                 </div>
             </div>
             <div>
@@ -52,6 +65,7 @@ const CreateTrip = () => {
                         <div
                             key={index}
                             className="p-4 border cursor-pointer rounded-lg hover:shadow"
+                            onClick={() => handleInput("budget", item.title)}
                         >
                             <h2 className="4xl">{item.icon}</h2>
                             <h2 className="font-bold text-lg">{item.title}</h2>
@@ -71,6 +85,9 @@ const CreateTrip = () => {
                     {SelectTravelList.map((item, index) => (
                         <div
                             key={index}
+                            onClick={() =>
+                                handleInput("travellers", item.people)
+                            }
                             className="p-4 border cursor-pointer rounded-lg hover:shadow"
                         >
                             <h2 className="4xl">{item.icon}</h2>
