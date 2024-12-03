@@ -5,6 +5,7 @@ import CreateTrip from "./create-trip";
 import { createBrowserRouter } from "react-router-dom";
 import Header from "./components/custom/Header";
 import { RouterProvider } from "react-router";
+import { Toaster } from "@/components/ui/sonner";
 
 const router = createBrowserRouter([
     {
@@ -19,6 +20,7 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
     <>
         <Header />
+        <Toaster position="bottom-left" />
         <RouterProvider router={router} />
     </>
 );

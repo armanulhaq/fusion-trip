@@ -1,27 +1,85 @@
 import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
-import { SelectBudgetOptions, SelectTravelList } from "@/constants/options";
+import {
+    AI_Prompt,
+    SelectBudgetOptions,
+    SelectTravelList,
+} from "@/constants/options";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { chatSession } from "@/service/ai";
 
 const CreateTrip = () => {
     const [place, setPlace] = useState();
-    const [formData, setFormData] = useState([]);
+    const [formData, setFormData] = useState({});
     const handleInput = (name, value) => {
-        if (name === "noOfDays" && value > 5) {
-            console.log("Please enter trip days less than 5");
+        if (name === "location" && value?.label) {
+            setFormData((prev) => ({
+                ...prev,
+                location: {
+                    label: value.label,
+                    value: value.value,
+                },
+            }));
             return;
         }
-        setFormData({ ...formData, [name]: value });
+        setFormData((prev) => ({ ...prev, [name]: value }));
     };
+
     useEffect(() => {
         console.log(formData);
     }, [formData]);
 
-    const onGenerateTrip = () => {
-        if (formData?.noOfDays > 5) {
-            console.log("Please enter trip days less than 5");
+    const onGenerateTrip = async () => {
+        if (
+            formData?.noOfDays > 5 ||
+            !formData?.location ||
+            !formData.budget ||
+            !formData.traveller
+        ) {
+            toast.error("Please fill all required fields correctly");
             return;
+        }
+
+        const FINAL_PROMPT = AI_Prompt.replace(
+            "{location}",
+            formData?.location.label
+        )
+            .replace("{totalDays}", formData?.noOfDays)
+            .replace("{traveller}", formData.traveller)
+            .replace("{budget}", formData?.budget)
+            .replace("{totalDays}", formData?.noOfDays);
+        console.log(FINAL_PROMPT);
+
+        const result = await chatSession.sendMessage(FINAL_PROMPT);
+        console.log(result?.response?.text);
+    };
+
+    const onGenerateTrip = async () => {
+        if (
+            formData?.noOfDays > 5 ||
+            !formData?.location ||
+            !formData.budget ||
+            !formData.traveller
+        ) {
+            toast.error("Please fill all required fields correctly");
+            return;
+        }
+
+        try {
+            const travelPlan = await generateTravelPlan(
+                formData.location.label,
+                formData.noOfDays,
+                formData.traveller,
+                formData.budget
+            );
+
+            // Handle the JSON response here
+            console.log(travelPlan);
+        } catch (error) {
+            toast.error("Failed to generate travel plan");
+            console.error(error);
         }
     };
     return (
