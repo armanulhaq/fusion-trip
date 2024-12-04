@@ -53,7 +53,7 @@ const CreateTrip = () => {
         console.log(FINAL_PROMPT);
 
         const result = await chatSession.sendMessage(FINAL_PROMPT);
-        console.log(result?.response?.text);
+        console.log(result?.response?.text());
     };
 
     return (
