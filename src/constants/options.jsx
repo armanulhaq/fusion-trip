@@ -32,20 +32,20 @@ export const SelectTravelList = [
 export const SelectBudgetOptions = [
     {
         id: 1,
-        title: "Cheap",
-        desc: "Stay conscious of costs",
+        title: "Saver",
+        desc: "Affordable options for budget-friendly travel.",
         icon: "💵",
     },
     {
         id: 2,
-        title: "Moderate",
-        desc: "Keep cost on the average side",
+        title: "Comfort",
+        desc: "A balance of value and convenience.",
         icon: "💸",
     },
     {
         id: 3,
         title: "Luxury",
-        desc: "Don't worry about the cost",
+        desc: "Premium experiences with top-tier amenities.",
         icon: "💰",
     },
 ];
