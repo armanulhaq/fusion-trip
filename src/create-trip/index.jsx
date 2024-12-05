@@ -18,12 +18,16 @@ import {
 import { FcGoogle } from "react-icons/fc";
 import { useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "@/service/firebaseConfig";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const CreateTrip = () => {
     const [place, setPlace] = useState();
     const [formData, setFormData] = useState({});
 
     const [openDialogue, setOpenDialogue] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const handleInput = (name, value) => {
         if (name === "location" && value?.label) {
@@ -64,7 +68,7 @@ const CreateTrip = () => {
             toast.error("Please fill all required fields correctly.");
             return;
         }
-
+        setLoading(true);
         const FINAL_PROMPT = AI_Prompt.replace(
             "{location}",
             formData?.location.label
@@ -78,7 +82,23 @@ const CreateTrip = () => {
 
         const result = await chatSession.sendMessage(FINAL_PROMPT);
         console.log(result?.response?.text());
+        setLoading(false);
+        saveAITrip(result?.response?.text());
     };
+
+    const saveAITrip = async (tripData) => {
+        setLoading(true);
+        const user = JSON.parse(localStorage.getItem("user"));
+        const docID = Date.now().toString();
+        await setDoc(doc(db, "AITrips", docID), {
+            userSelection: formData,
+            tripData: tripData,
+            userEmail: user?.email,
+            id: docID,
+        });
+        setLoading(false);
+    };
+
     const GetUserProfile = (tokenInfo) => {
         axios
             .get(
@@ -186,7 +206,13 @@ const CreateTrip = () => {
             </div>
 
             <div className="my-10 justify-end flex">
-                <Button onClick={onGenerateTrip}>Generate Trip</Button>
+                <Button onClick={onGenerateTrip} disable={loading}>
+                    {loading ? (
+                        <AiOutlineLoading3Quarters className="h-7 w-7 animate-spin" />
+                    ) : (
+                        "Generate Trip"
+                    )}
+                </Button>
             </div>
             <Dialog open={openDialogue}>
                 <DialogContent>
