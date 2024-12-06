@@ -1,12 +1,37 @@
-import { Button } from "@/components/ui/button";
-import { FaShareAlt } from "react-icons/fa";
+import { GetPlaceDetails } from "@/service/GlobalAPI";
+import { useEffect, useState } from "react";
+
+const PHOTO_REF_URL =
+    "https://places.googleapis.com/v1/{NAME}/media?maxHeightPx=600&maxWidthPx=600&key=" +
+    "AIzaSyAsiu-PZRr7Mi2Ec1GidLo9vMpGMKpZv5I";
 
 const InfoSection = ({ trip }) => {
+    const [photoURL, setPhotoURL] = useState("");
+    useEffect(() => {
+        trip && GetPlaceImage();
+    }, [trip]);
+
+    const GetPlaceImage = async () => {
+        const data = {
+            textQuery: trip?.userSelection?.location?.label,
+        };
+        try {
+            const response = await GetPlaceDetails(data);
+
+            const photoURL = PHOTO_REF_URL.replace(
+                "{NAME}",
+                response.data.places[0].photos[3].name
+            );
+            setPhotoURL(photoURL);
+        } catch (error) {
+            console.error("Error fetching place image:", error);
+        }
+    };
     return (
         <div>
             <img
                 className="h-[340px] w-full object-cover rounded-s"
-                src="/placeholder.jpg"
+                src={photoURL}
                 alt=""
             />
             <div className="flex justify-between items-center">
@@ -26,9 +51,6 @@ const InfoSection = ({ trip }) => {
                         </h2>
                     </div>
                 </div>
-                <Button variant="outline">
-                    <FaShareAlt />
-                </Button>
             </div>
         </div>
     );

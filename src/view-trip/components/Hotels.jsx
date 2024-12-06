@@ -1,39 +1,42 @@
+import { Link } from "react-router-dom";
+
 const Hotels = ({ trip }) => {
-    // Get hotels from either structure
-
-    const hotels = trip?.tripData ? JSON.parse(trip.tripData).HotelOptions : [];
-
+    const parsedTripData = trip?.tripData ? JSON.parse(trip.tripData) : null;
     return (
-        <div className="gap-15">
-            <h2 className="font-bold text-xl mt-5">Recommended Hotels</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                {hotels?.map((item, index) => (
-                    <div
+        <div>
+            <h2 className="font-bold text-xl mt-5 mb-5">
+                Hotel Recommendations
+            </h2>
+            <div className=" grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+                {parsedTripData?.HotelOptions?.map((hotel, index) => (
+                    <Link
                         key={index}
-                        className="hover:scale-105 transition-all shadow-md rounded-lg p-3 cursor-pointer"
+                        to={
+                            "https://google.com/maps/search/?api=1&query=" +
+                            hotel.HotelName +
+                            "," +
+                            hotel.HotelAddress
+                        }
+                        target="_blank"
                     >
-                        <img
-                            src={item.hotelImageUrl || "/hotel.jpg"}
-                            alt={item.hotelName || item.HotelName}
-                            className="rounded-lg w-full h-48 object-cover"
-                        />
-                        <div className="my-3 space-y-2">
-                            <h2 className="font-medium">
-                                {item.hotelName || item.HotelName}
-                            </h2>
-                            <p className="text-sm text-gray-600">
-                                {item.description || item.Description}
-                            </p>
-                            <div className="flex justify-between gap-2">
-                                <span className="text-sm">
-                                    ⭐️ {item.rating || item.Rating}
-                                </span>
-                                <span className="text-sm">
-                                    {item.price || item.Price}
-                                </span>
+                        <div className="rounded-xl shadow-md hover:scale-105 transition-all cursor-pointer">
+                            <img className="rounded-xl" src="/hotel.jpg" />
+                            <div className="p-5 my-2 flex flex-col gap-2">
+                                <h2 className="font-medium">
+                                    {hotel.HotelName}
+                                </h2>
+                                <h2 className="text-xs text-gray-400 truncate">
+                                    📍{hotel.Description}
+                                </h2>
+                                <div className="flex justify-between">
+                                    <h2 className="text-sm">{hotel?.Price}</h2>
+                                    <h2 className="text-sm">
+                                        ⭐️{hotel?.Rating}
+                                    </h2>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </Link>
                 ))}
             </div>
         </div>
